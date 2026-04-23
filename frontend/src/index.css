@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Bloomberg Terminal Dark Theme ─────────────────────────────────────── */
+:root {
+  --bg-primary: #060a13;
+  --bg-card: #0d1117;
+  --bg-card-hover: #131a24;
+  --bg-elevated: #161d29;
+  --border: #1c2333;
+  --border-hover: #2a3548;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #484f58;
+  --neon-green: #00d26a;
+  --neon-red: #ff3b3b;
+  --neon-blue: #58a6ff;
+  --neon-cyan: #00e5ff;
+  --neon-amber: #ffa726;
+  --neon-purple: #b388ff;
+  --glow-green: 0 0 12px rgba(0, 210, 106, 0.3);
+  --glow-red: 0 0 12px rgba(255, 59, 59, 0.3);
+  --glow-blue: 0 0 12px rgba(88, 166, 255, 0.25);
+}
+
+@layer base {
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #2a3548; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3d4f6a; }
+}
+
+@layer components {
+  /* ── Cards ────────────────────────────────────────── */
+  .card {
+    @apply rounded-xl p-4;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    border-color: var(--border-hover);
+  }
+  .card-glass {
+    @apply rounded-xl p-4;
+    background: rgba(13, 17, 23, 0.7);
+    border: 1px solid rgba(28, 35, 51, 0.6);
+    backdrop-filter: blur(12px);
+  }
+  .card-glow-green {
+    box-shadow: inset 0 1px 0 rgba(0, 210, 106, 0.1), var(--glow-green);
+    border-color: rgba(0, 210, 106, 0.2);
+  }
+  .card-glow-red {
+    box-shadow: inset 0 1px 0 rgba(255, 59, 59, 0.1), var(--glow-red);
+    border-color: rgba(255, 59, 59, 0.2);
+  }
+
+  /* ── Buttons ──────────────────────────────────────── */
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200;
+    background: linear-gradient(135deg, #1a6dff 0%, #0050cc 100%);
+    color: white;
+    border: 1px solid rgba(88, 166, 255, 0.3);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #2979ff 0%, #1565c0 100%);
+    box-shadow: 0 0 20px rgba(26, 109, 255, 0.25);
+  }
+  .btn-secondary {
+    @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200;
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+  }
+  .btn-terminal {
+    @apply px-3 py-1.5 rounded text-xs font-mono font-semibold transition-all duration-150;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+  .btn-terminal.active {
+    background: rgba(88, 166, 255, 0.1);
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+    box-shadow: var(--glow-blue);
+  }
+
+  /* ── Typography ───────────────────────────────────── */
+  .font-mono { font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+  .num { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+  .up { color: var(--neon-green); }
+  .down { color: var(--neon-red); }
+  .text-accent { color: var(--neon-blue); }
+  .text-muted { color: var(--text-muted); }
+
+  /* ── Badges ───────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono font-semibold uppercase tracking-wider;
+  }
+  .badge-green { @apply badge; background: rgba(0, 210, 106, 0.12); color: var(--neon-green); }
+  .badge-red { @apply badge; background: rgba(255, 59, 59, 0.12); color: var(--neon-red); }
+  .badge-blue { @apply badge; background: rgba(88, 166, 255, 0.12); color: var(--neon-blue); }
+  .badge-yellow { @apply badge; background: rgba(255, 167, 38, 0.12); color: var(--neon-amber); }
+  .badge-purple { @apply badge; background: rgba(179, 136, 255, 0.12); color: var(--neon-purple); }
+  .badge-cyan { @apply badge; background: rgba(0, 229, 255, 0.12); color: var(--neon-cyan); }
+
+  /* ── Inputs ───────────────────────────────────────── */
+  .input {
+    @apply rounded-lg px-3 py-2 text-sm;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input::placeholder { color: var(--text-muted); }
+  .input:focus {
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.15);
+  }
+
+  /* ── Terminal Table ───────────────────────────────── */
+  .table-terminal {
+    @apply w-full text-xs;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .table-terminal thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+  .table-terminal th {
+    @apply py-2 px-2 text-left font-semibold uppercase tracking-wider;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+  }
+  .table-terminal td {
+    @apply py-2 px-2;
+    border-bottom: 1px solid rgba(28, 35, 51, 0.4);
+  }
+  .table-terminal tbody tr:hover {
+    background: rgba(88, 166, 255, 0.04);
+  }
+
+  /* ── Ticker Tape ──────────────────────────────────── */
+  .ticker-tape {
+    overflow: hidden;
+    white-space: nowrap;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+  }
+  .ticker-scroll {
+    display: inline-flex;
+    animation: tickerScroll 40s linear infinite;
+  }
+  .ticker-scroll:hover { animation-play-state: paused; }
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── Pulse dot ────────────────────────────────────── */
+  .pulse-dot {
+    @apply w-2 h-2 rounded-full;
+    animation: pulse-glow 2s infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; box-shadow: 0 0 4px currentColor; }
+    50% { opacity: 0.5; box-shadow: 0 0 8px currentColor; }
+  }
+
+  /* ── Skeleton loading ─────────────────────────────── */
+  .skeleton {
+    @apply rounded;
+    background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-card-hover) 50%, var(--bg-elevated) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+}
+
+/* ── Recharts dark overrides ──────────────────────────────────────────── */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line { stroke: var(--border) !important; }
+.recharts-text { fill: var(--text-muted) !important; font-family: 'JetBrains Mono', monospace !important; font-size: 10px !important; }
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+  border-radius: 8px !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+.recharts-legend-item-text { fill: var(--text-secondary) !important; font-size: 11px !important; }
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+  .card { padding: 12px; }
+}
