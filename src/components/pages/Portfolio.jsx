@@ -55,6 +55,7 @@ export default function Portfolio() {
     try {
       const res = await uploadPortfolio(file)
       setPortfolio(res.data)
+      // Load historical performance
       const h = res.data.holdings
       if (h.length > 0) {
         setHistLoading(true)
@@ -141,7 +142,7 @@ export default function Portfolio() {
               <Upload className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--text-muted)' }} />
               <p className="font-medium text-[var(--text-primary)]">Upload your portfolio CSV</p>
               <p className="text-sm mt-1 text-[var(--text-muted)]">Format: Symbol, Quantity, BuyPrice, BuyDate</p>
-              <p className="text-sm text-[var(--text-muted)]">Example: RELBÁCCE.NS, 10, 2400.50, 2023-01-15</p>
+              <p className="text-sm text-[var(--text-muted)]">Example: RELIANCE.NS, 10, 2400.50, 2023-01-15</p>
             </>
           )}
         </div>
@@ -292,4 +293,29 @@ export default function Portfolio() {
                   <div>
                     <div className="flex gap-4 mb-4 text-xs text-[var(--text-muted)]">
                       <span>Current: <span className="text-[var(--text-primary)] font-bold num">{'\u20B9'}{fmt(forecastData.current_price)}</span></span>
-                      <span>MA Signal: <ForecastBadge signal={forecastData.ma_signal} /><
+                      <span>MA Signal: <ForecastBadge signal={forecastData.ma_signal} /></span>
+                    </div>
+                    <div className="space-y-2">
+                      {forecastData.predictions?.map((p, i) => (
+                        <div key={i} className="flex justify-between text-xs p-2 rounded-lg" style={{ background: 'var(--bg-elevated)' }}>
+                          <span className="text-[var(--text-muted)]">{p.period}</span>
+                          <span className={`num font-bold ${colorClass(p.change_pct)}`}>
+                            {'\u20B9'}{fmt(p.price)} ({fmtPct(p.change_pct)})
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-widest mb-3">Analysis</p>
+                    <p className="text-xs text-[var(--text-secondary)] leading-relaxed">{forecastData.analysis || 'No analysis available.'}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
