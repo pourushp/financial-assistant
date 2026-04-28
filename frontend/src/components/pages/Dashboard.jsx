@@ -120,7 +120,11 @@ export default function Dashboard() {
     setChartLoading(false)
   }
 
-  useEffect(() => { load() }, [])
+  useEffect(() => {
+    load()
+    const interval = setInterval(load, 30_000) // auto-refresh every 30s
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="p-4 md:p-6 space-y-4">
@@ -221,7 +225,7 @@ export default function Dashboard() {
         <div className="card lg:col-span-2">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-[10px] font-mono font-semibold text-[var(--neon-cyan)] uppercase tracking-widest">India Market News</h3>
-            <Link to="/news" className="text-[10px] font-mono text-[var(--neon-blue)] hover:underline">ALL NEWS →</Link>
+            <Link to="/news" className="text-[10px] font-mono text-[var(--neon-blue)] hover:underline">ALL NEWS â</Link>
           </div>
           <div className="max-h-[320px] overflow-y-auto pr-1">
             {indiaNews.slice(0, 10).map((a, i) => <NewsItem key={i} article={a} />)}
@@ -236,7 +240,7 @@ export default function Dashboard() {
       <div className="card">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-[10px] font-mono font-semibold text-[var(--neon-amber)] uppercase tracking-widest">Global Finance</h3>
-          <Link to="/news" className="text-[10px] font-mono text-[var(--neon-blue)] hover:underline">VIEW ALL →</Link>
+          <Link to="/news" className="text-[10px] font-mono text-[var(--neon-blue)] hover:underline">VIEW ALL â</Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
           {worldNews.slice(0, 6).map((a, i) => <NewsItem key={i} article={a} compact />)}
