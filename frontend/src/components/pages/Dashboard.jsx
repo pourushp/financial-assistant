@@ -92,6 +92,7 @@ export default function Dashboard() {
   const [indiaNews, setIndiaNews] = useState([])
   const [worldNews, setWorldNews] = useState([])
   const [loading, setLoading] = useState(true)
+  const [errors, setErrors] = useState({})
   const [lastUpdated, setLastUpdated] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(null)
   const [indexChart, setIndexChart] = useState([])
@@ -99,13 +100,20 @@ export default function Dashboard() {
 
   const load = async () => {
     setLoading(true)
+    setErrors({})
     const [idxRes, movRes, inRes, wldRes] = await Promise.allSettled([
       getIndices(), getMovers(), getIndiaNews(15), getWorldNews(10),
     ])
+    const errs = {}
     if (idxRes.status === 'fulfilled') setIndices(idxRes.value.data)
+    else errs.indices = true
     if (movRes.status === 'fulfilled') setMovers(movRes.value.data)
+    else errs.movers = true
     if (inRes.status === 'fulfilled') setIndiaNews(inRes.value.data)
+    else errs.news = true
     if (wldRes.status === 'fulfilled') setWorldNews(wldRes.value.data)
+    else errs.world = true
+    setErrors(errs)
     setLastUpdated(new Date())
     setLoading(false)
   }
@@ -156,6 +164,14 @@ export default function Dashboard() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
             {[...Array(6)].map((_, i) => <div key={i} className="skeleton h-28 rounded-xl" />)}
           </div>
+        ) : indices.length === 0 && errors.indices ? (
+          <div className="card flex flex-col items-center justify-center py-8 text-center">
+            <Activity className="w-8 h-8 text-[var(--text-muted)] mb-2" />
+            <p className="text-sm text-[var(--text-secondary)]">Unable to load indices data</p>
+            <button onClick={load} className="btn-secondary text-xs mt-3 flex items-center gap-1.5">
+              <RefreshCw className="w-3 h-3" /> Retry
+            </button>
+          </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
             {indices.map((idx) => (
@@ -205,8 +221,10 @@ export default function Dashboard() {
             <TrendingUp className="w-3.5 h-3.5 text-[var(--neon-green)]" />
             <h3 className="text-[10px] font-mono font-semibold text-[var(--neon-green)] uppercase tracking-widest">Top Gainers</h3>
           </div>
-          {movers.gainers.length === 0 ? (
+          {loading && movers.gainers.length === 0 ? (
             <div className="space-y-2">{[...Array(5)].map((_, i) => <div key={i} className="skeleton h-8 rounded" />)}</div>
+          ) : movers.gainers.length === 0 ? (
+            <p className="text-xs text-[var(--text-muted)] py-4 text-center">No data available</p>
           ) : movers.gainers.map((s, i) => <MoverRow key={s.symbol} stock={s} rank={i + 1} />)}
         </div>
 
@@ -216,8 +234,10 @@ export default function Dashboard() {
             <TrendingDown className="w-3.5 h-3.5 text-[var(--neon-red)]" />
             <h3 className="text-[10px] font-mono font-semibold text-[var(--neon-red)] uppercase tracking-widest">Top Losers</h3>
           </div>
-          {movers.losers.length === 0 ? (
+          {loading && movers.losers.length === 0 ? (
             <div className="space-y-2">{[...Array(5)].map((_, i) => <div key={i} className="skeleton h-8 rounded" />)}</div>
+          ) : movers.losers.length === 0 ? (
+            <p className="text-xs text-[var(--text-muted)] py-4 text-center">No data available</p>
           ) : movers.losers.map((s, i) => <MoverRow key={s.symbol} stock={s} rank={i + 1} />)}
         </div>
 
@@ -225,7 +245,7 @@ export default function Dashboard() {
         <div className="card lg:col-span-2">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-[10px] font-mono font-semibold text-[var(--neon-cyan)] uppercase tracking-widest">India Market News</h3>
-            <Link to="/news" className="text-[10px] font-mono text-[var(--neon-blue)] hover:underline">ALL NEWS â</Link>
+            <Link to="/news" className="text-[10px] font-mono text-[var(--neon-blue)] hover:underline">ALL NEWS →</Link>
           </div>
           <div className="max-h-[320px] overflow-y-auto pr-1">
             {indiaNews.slice(0, 10).map((a, i) => <NewsItem key={i} article={a} />)}
@@ -240,7 +260,7 @@ export default function Dashboard() {
       <div className="card">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-[10px] font-mono font-semibold text-[var(--neon-amber)] uppercase tracking-widest">Global Finance</h3>
-          <Link to="/news" className="text-[10px] font-mono text-[var(--neon-blue)] hover:underline">VIEW ALL â</Link>
+          <Link to="/news" className="text-[10px] font-mono text-[var(--neon-blue)] hover:underline">VIEW ALL →</Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6">
           {worldNews.slice(0, 6).map((a, i) => <NewsItem key={i} article={a} compact />)}
