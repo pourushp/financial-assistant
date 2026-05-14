@@ -2,9 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FinBot Terminal – India Markets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>FinBot — India Markets Terminal</title>
+    <meta name="description" content="Real-time Indian stock market dashboard. Live NIFTY, SENSEX, Bank NIFTY indices, top gainers & losers, market news, portfolio tracking, and SIP calculator." />
+    <meta name="keywords" content="Indian stock market, NIFTY 50, SENSEX, BSE, NSE, stock tracker, portfolio, mutual funds, SIP calculator" />
+    <meta name="author" content="FinBot" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#10b981" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FinBot" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="FinBot — India Markets Terminal" />
+    <meta property="og:description" content="Real-time Indian stock market dashboard with live indices, movers, news, and portfolio tracking." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sent-i-meter.com/" />
+    <meta property="og:image" content="https://sent-i-meter.com/icons/icon-512.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="FinBot — India Markets Terminal" />
+    <meta name="twitter:description" content="Real-time Indian stock market dashboard with live indices, movers, and news." />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,5 +39,15 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Register service worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('SW registered:', reg.scope))
+            .catch(err => console.log('SW registration failed:', err));
+        });
+      }
+    </script>
   </body>
 </html>
